@@ -1,25 +1,118 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import {CompletedTasks} from './components/Helper'
+import {PendingTasks} from './components/Helper'
 
 function App() {
+  const [toDos,setTodos] = useState([])
+  const [toDo,setTodo] = useState('')
+  const [err,setError] = useState(null)
+  const deleteList = (id)=>{
+    const newList = toDos.filter(obj => obj.id !== id)
+    
+    setTodos(newList)
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <div className="mainHeading">
+        <h1>ToDo List</h1>
+      </div>
+      <div className="subHeading">
+        <br />
+        <h2>📝 Available List Of Task</h2>
+      </div>
+      <div className="input">
+        <input type="text" value={toDo} onChange={(e)=>{setError(""); setTodo(e.target.value)}} placeholder="📝 Enter Your Word Title!" />
+        <i onClick={()=>{ 
+            setTodo(''); 
+            const regex = /^[^\s+\W][\w\W\s+]{3,30}$/igm
+            if(regex.test(toDo)){
+              const findIndex = toDos.find(elem => elem.text.toLowerCase() === toDo.toLowerCase())
+              if(findIndex){
+                setError("Item Already Exist!")
+              }else{
+                setTodos([...toDos,{id:new Date().getTime(),added:new Date().toLocaleString('en-IN'),text:toDo,status:false}])
+              }
+            }else{
+                setError("Invalid Item!")
+            }
+          }
+        } className="fas fa-plus"></i>
+      </div>
+      <code className='error-label'>{err}</code>
+      <div className="todos">
+        {
+          toDos.map((obj)=>{
+            return (
+              <div className="todo">
+                <div className="left">
+                  <input type="checkbox" checked={obj.status} onChange={(e)=>{
+                    setTodos(toDos.filter((obj2)=>{
+                      if(obj2.id === obj.id){
+                        obj2.status = e.target.checked
+                        obj2.completed = new Date().toLocaleString('en-IN')
+                      }
+                      return obj2
+                    }))
+
+                  }} name="" id="" />
+                  <p>Time : {obj.added}<br/>Task : {obj.text}</p>
+                </div>
+                <div className="right">
+                  <i onClick={()=>{
+                      deleteList(obj.id)
+                  }} className="fas fa-times"></i>
+                </div>
+            </div>
+            );
+          })
+        }
+      </div>
+
+      <div className='flex-items'>
+        <div className="list-task">
+        <h2 style={{marginTop:'10px'}}>✅ Completed Tasks (<CompletedTasks ToDo={toDos}/>)</h2>
+          {
+            toDos.map((obj)=>{
+                if(obj.status){
+                  return(
+                    <div>
+                      <div className="left1">
+                        <p>Completed : {obj.completed}<br/>Task : {obj.text}</p>
+                      </div>
+                    </div>
+                  );
+                }
+                return null
+            })
+          }
+        </div>
+      
+
+      <div>
+        <div className="list-task">
+        <h2 style={{marginTop:'10px'}}>⌛ Pending Tasks (<PendingTasks ToDo={toDos}/>)</h2>
+          {
+            toDos.map((obj)=>{
+                if(obj.status===false){
+                  return(
+                    <div>
+                      <div className="left2">
+                         <p>Completed : {obj.added}<br/>Task : {obj.text}</p>
+                      </div>
+                    </div>
+                   
+                  );
+                }
+                return null
+            })
+          }
+        </div>
+      </div>
+</div>
     </div>
   );
 }
+
 
 export default App;
