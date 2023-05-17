@@ -26,7 +26,7 @@ function App() {
         <i onClick={()=>{ 
             setTodo(''); 
             const regex = /^[^\s+\W][\w\W\s+]{3,30}$/igm
-            if(regex.test(toDo)){
+            if(regex.test(toDo.trim())){
               const findIndex = toDos.find(elem => elem.text.toLowerCase() === toDo.toLowerCase())
               if(findIndex){
                 setError("Item Already Exist!")
