@@ -25,7 +25,7 @@ function App() {
         <input type="text" value={toDo} onChange={(e)=>{ setError(""); setTodo(e.target.value)}} placeholder="📝 Enter Your Word Title!" />
         <i onClick={()=>{ 
             setTodo(''); 
-            const regex = /^[^\s+\W][\w\W\s+]{3,30}$/igm
+            const regex = /^[^\s+\W][\w\W\s+]{3,29}$/igm
             if(regex.test(toDo.trim())){
               const findIndex = toDos.find(elem => elem.text.toLowerCase() === toDo.toLowerCase())
               if(findIndex){
@@ -39,7 +39,10 @@ function App() {
           }
         } className="fas fa-plus"></i>
       </div>
-      <code className='error-label'>{err}</code>
+      <div className='labels'>
+        <div className='left'><code className='error-label'>{err}</code></div>
+        <div className='right'><code style={{color:`${30 - toDo.length < 27 && 30 - toDo.length >= 0 ? "white" : "red"}`}}>{30 - toDo.length < 30 ? 30 - toDo.length + "/30" : ""}</code></div>
+      </div>
       <div className="todos">
         {
           toDos.map((obj)=>{

@@ -55,6 +55,10 @@ h2 {
   padding: 10px;
 }
 
+.app .input input:not(:focus) + .app .error-label{
+    display: none;
+}
+
 .app i {
   cursor: pointer;
   font-size: larger;
@@ -129,6 +133,11 @@ h2 {
   padding: 5px;
 }
 
-.app .error-label{
+.app .labels{
+  display: flex;
+  justify-content: space-between;
+}
+
+.app .labels .left{
   color: red;
 }
