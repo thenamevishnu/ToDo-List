@@ -9,9 +9,9 @@ function App() {
   const [err,setError] = useState(null)
   const deleteList = (id)=>{
     const newList = toDos.filter(obj => obj.id !== id)
-    
     setTodos(newList)
   }
+
   return (
     <div className="app">
       <div className="mainHeading">
@@ -22,7 +22,7 @@ function App() {
         <h2>📝 Available List Of Task</h2>
       </div>
       <div className="input">
-        <input type="text" value={toDo} onChange={(e)=>{setError(""); setTodo(e.target.value)}} placeholder="📝 Enter Your Word Title!" />
+        <input type="text" value={toDo} onChange={(e)=>{ setError(""); setTodo(e.target.value)}} placeholder="📝 Enter Your Word Title!" />
         <i onClick={()=>{ 
             setTodo(''); 
             const regex = /^[^\s+\W][\w\W\s+]{3,30}$/igm
@@ -98,7 +98,7 @@ function App() {
                   return(
                     <div>
                       <div className="left2">
-                         <p>Completed : {obj.added}<br/>Task : {obj.text}</p>
+                         <p>Pending : {obj.added}<br/>Task : {obj.text}</p>
                       </div>
                     </div>
                    
